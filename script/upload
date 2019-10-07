@@ -1,8 +1,8 @@
-#!/bin/sh
+#!/bin/bash
 
 set -e
 
-REPO="git-lfs/git-lfs"
+REPO="solidnerd/git-lfs"
 WORKDIR="$(mktemp -d)"
 
 trap 'rm -fr "$WORKDIR"' EXIT
@@ -41,10 +41,20 @@ categorize_os () {
   fi
 }
 
+
 categorize_arch () {
   local arch="$1"
 
-  echo "$arch" | tr a-z A-Z
+  if [[ "$arch" = "armel" ]]; then
+    echo "ARM v5"
+    return 
+  fi 
+  if [[ "$arch" = "armhf" ]]; then
+    echo "ARM v7"
+    return 
+  fi 
+
+  echo "$arch" | tr '[:lower:]' '[:upper:]'
 }
 
 # Categorize a release asset and print its human readable name to standard
